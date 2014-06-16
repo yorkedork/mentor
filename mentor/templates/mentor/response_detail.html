@@ -3,28 +3,22 @@
 {% block page_title %}Mentor Homepage{% endblock %}
 
 {% block content %}
-<div class="container jumbotron" >
-    <h2 class="text-center">Response Detail</h2>
-        {% if response.userResponse %}
-            <div class="alert alert-info">{% if response.userResponse.status %} <span class="glyphicon glyphicon-ok"></span> Resolved by {% else %} Unresolved by {% endif %}{{ response.userResponse.mentor_resolved }} at {{ response.userResponse.created_on }}</div>
+<div class="row">
+    <div class="col-md-6">
+        <a class="btn btn-sm btn-default" href="javascript:window.history.go(-1)">Go Back</a>
+    </div>
+    <div class="col-md-6">
+        {% if response.status == RESOLVED %}
+            <a href="{% url 'response-resolve' response.pk %}" class="pull-right btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to mark this ticket as unresolved? Click OK to continue')"><span class="glyphicon glyphicon-remove"></span> Mark as Unresolved</a>
+        {% elif response.status == UNRESOLVED %}
+            <a href="{% url 'response-resolve' response.pk %}" class="pull-right btn btn-primary btn-sm"><span class="glyphicon glyphicon-ok"></span> Mark as Resolved</a>
         {% endif %}
-        <div class="pull-right">
-            {% if response.userResponse %}
-                {% if response.userResponse.status %}
+    </div>
+</div>
+<br />
 
-                    <a href="{% url 'response-resolve' response.pk %}" class="btn btn-danger btn-sm">
-                    <span class="glyphicon glyphicon-remove"></span> Unresolve
-                {% else %}
-                    <a href="{% url 'response-resolve' response.pk %}" class="btn btn-primary btn-sm">
-                    <span class="glyphicon glyphicon-ok"></span> Resolve
-                {% endif %}
-            {% else %}
-                <a href="{% url 'response-resolve' response.pk %}" class="btn btn-primary btn-sm">
-                <span class="glyphicon glyphicon-ok"></span> Resolve
-            {% endif %}
-            </a>
-            <a class="btn btn-sm btn-default" href="{% url 'mentor-homepage' %}">Go Back</a>
-        </div>
+<div class="row">
+    <div class="col-md-8">
 
         <!-- Student Name -->
         <legend>General Information</legend>
@@ -191,27 +185,33 @@
                             {{ response.follow_up_phone }}
                         </div>
                     </div>
-  
                 </div>
             </div>
-            <div class="form-group pull-right">
-                {% if response.userResponse %}
-                    {% if response.userResponse.status %}
-                        <a href="{% url 'response-resolve' response.pk %}" class="btn btn-danger btn-sm">
-                        <span class="glyphicon glyphicon-remove"></span> Unresolve
-                    {% else %}
-                        <a href="{% url 'response-resolve' response.pk %}" class="btn btn-primary btn-sm">
-                        <span class="glyphicon glyphicon-ok"></span> Resolve
-                    {% endif %}
-                {% else %}
-                    <a href="{% url 'response-resolve' response.pk %}" class="btn btn-primary btn-sm">
-                    <span class="glyphicon glyphicon-ok"></span> Resolve
-                {% endif %}
-                </a>
-                <a class="btn btn-sm btn-default" href="{% url 'mentor-homepage' %}">Go Back</a>
-            </div>
-            
         </div>
+    </div>
 
+    <div class="col-md-4">
+        <h4>History</h4>
+        <table class="table table-condensed table-striped">
+            {% for hist in history %}
+                <tr>
+                    <td>{{ hist.get_action_display }} by {{ hist.user }} on {{ hist.created_on }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <a class="btn btn-sm btn-default" href="javascript:window.history.go(-1)">Go Back</a>
+    </div>
+    <div class="col-md-6">
+        {% if response.status == RESOLVED %}
+            <a href="{% url 'response-resolve' response.pk %}" class="pull-right btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to mark this ticket as unresolved? Click OK to continue')"><span class="glyphicon glyphicon-remove"></span> Mark as Unresolved</a>
+        {% elif response.status == UNRESOLVED %}
+            <a href="{% url 'response-resolve' response.pk %}" class="pull-right btn btn-primary btn-sm"><span class="glyphicon glyphicon-ok"></span> Mark as Resolved</a>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

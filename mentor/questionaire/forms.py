@@ -22,10 +22,9 @@ class USPhoneNumberMultiWidget(forms.MultiWidget):
     def value_from_datadict(self, data, files, name):
         values = super(USPhoneNumberMultiWidget, self).value_from_datadict(data, files, name)
         return u'%s%s%s' % tuple(values)
-        
+
 
 class QuestionaireForm(forms.ModelForm):
-
     STUDENT = 'ST'
     MENTOR = 'MT'
     IDENTITY_CHOICES = (
@@ -43,7 +42,7 @@ class QuestionaireForm(forms.ModelForm):
         ('OL','Online'),
         ('IP','In-person')
     )
-    
+
     PRIMARY_CONCERN_CHOICES = PrimaryConcernChoice.objects.all()
 
     WHEN_CHOICES = (
@@ -66,41 +65,38 @@ class QuestionaireForm(forms.ModelForm):
     )
 
     name = forms.CharField(label='Name',error_messages={'required':'Please enter your name'},required=True)
-
     student_ID = forms.DecimalField(label='Student ID#', required=False, max_digits=9, decimal_places=0)
-
     student_name = forms.CharField(label='Name of student',required=False)
     mentor_name = forms.CharField(label='Name of FRINQ or SINQ mentor',required=False)
-    
     UNST_course = forms.ChoiceField(
         widget=forms.RadioSelect(),
         choices=UNST_CHOICES,
         label='What University Studies course are you enrolled in?',
-        required=False)
-
+        required=False
+    )
     type_of_course = forms.ChoiceField(
         choices=COURSE_TYPE_CHOICES,
         label='Is your UNST course in-person, online or hybrid?',
-        required=False)
-
+        required=False
+    )
     identity = forms.ChoiceField(
         choices=IDENTITY_CHOICES,
         label='Are you a student or a mentor?',
         widget=forms.RadioSelect(),
-        required=True)
-    
+        required=True
+    )
     on_behalf_of_student = forms.ChoiceField(
         choices=YN_CHOICES,
         label='Are you filling out this form on behalf of student?',
         widget=forms.RadioSelect(),
-        required=False)
+        required=False
+    )
     primary_concern = forms.ModelMultipleChoiceField(
         widget=forms.widgets.CheckboxSelectMultiple(attrs={'class': 'control-label', 'style':'margin-bottom: 0px'}),
         queryset=PRIMARY_CONCERN_CHOICES,
         label='What are your primary concerns? (Check all that apply)',
         required=False,
     )
-    
     primary_concern_other = forms.CharField(
         widget=forms.widgets.TextInput(attrs={'class': 'form-control input-sm'}),
         label="Other: ",
@@ -111,55 +107,40 @@ class QuestionaireForm(forms.ModelForm):
         label="Please share the steps you've taken to address these concerns (if any)",
         required=False,
     )
-
     when_take_step = forms.ChoiceField(
         choices=WHEN_CHOICES,
         label='When did you take these steps?',
         required=False,
     )
-    
     support_from_MAPS = forms.CharField(
         widget=forms.widgets.Textarea(attrs={'rows':'3'}),
         label="What kind of support would be helpful from the MAPS team?",
         required=False,
     )
-
     contact_who = forms.ChoiceField(
         choices=NY_CHOICES,
         label='Would you like us to respond directly to the student?',
         widget=forms.RadioSelect(),
         required=False,
     )
-
     follow_up_email = forms.EmailField(
         widget=forms.widgets.EmailInput,
         label='Email',
-        required=False)
-
+        required=False
+    )
     follow_up_phone = forms.DecimalField(
         widget = USPhoneNumberMultiWidget,
         error_messages={'required':'Please insert an appropriate phone number'},
         label='Phone number',
-        required=False)
+        required=False
+    )
 
-       
     def __init__(self, *args, **kwargs):
         super(QuestionaireForm, self).__init__(*args, **kwargs)
 
-        self.fields['name'].widget.attrs['class'] = 'form-control input-sm'  
-        self.fields['student_ID'].widget.attrs['class'] = 'form-control input-sm'
-        self.fields['student_name'].widget.attrs['class'] = 'form-control input-sm'
-
-        self.fields['mentor_name'].widget.attrs['class'] = 'form-control input-sm'
-
-        self.fields['when_take_step'].widget.attrs['class'] = 'form-control input-sm'
-        self.fields['type_of_course'].widget.attrs['class'] = 'form-control input-sm'
-
-        self.fields['step_taken'].widget.attrs['class'] ='form-control input-sm'
-        self.fields['when_take_step'].widget.attrs['class'] ='form-control input-sm'
-        self.fields['support_from_MAPS'].widget.attrs['class'] ='form-control input-sm'
-        self.fields['follow_up_email'].widget.attrs['class'] ='form-control input-sm'
-
+        controls = ['name', 'student_ID', 'student_name', 'mentor_name', 'when_take_step', 'type_of_course', 'step_taken', 'when_take_step', 'support_from_MAPS', 'follow_up_email']
+        for control in controls:
+            self.fields[control].widget.attrs['class'] = 'form-control input-sm'
 
     def save(self, user, *args, **kwargs):
         """
@@ -169,7 +150,7 @@ class QuestionaireForm(forms.ModelForm):
 
         self.instance.user = user
         post = super(QuestionaireForm, self).save(*args, **kwargs)
-        post.sendNotification() 
+        post.sendNotification()
 
     def clean_on_behalf_of_student(self):
         # Since "identity" field is placed first under fields list in Meta class,
@@ -201,7 +182,7 @@ class QuestionaireForm(forms.ModelForm):
                 return contact_who
         else:
             return ''
-    
+
     def clean_mentor_name(self):
         mentor_name = self.cleaned_data.get("mentor_name")
         identity = self.cleaned_data.get("identity")
@@ -274,7 +255,6 @@ class QuestionaireForm(forms.ModelForm):
             # Student is filling out the form, pop out name and assign that value to student_name
             cleaned_data.pop("name", None)
             cleaned_data["student_name"] = name
-        
         elif identity == 'MT':
             # Mentor is filling out the form, pop out name and assign that value to mentor_name
             cleaned_data.pop("name", None)
@@ -287,11 +267,10 @@ class QuestionaireForm(forms.ModelForm):
         if not email and not phone :
             raise forms.ValidationError('Fill at least one method to follow-up you')
 
-
         return cleaned_data
-    
+
     class Meta:
-        model = Questionaire 
+        model = Questionaire
         fields = (
             # The order of fields below will dictate the order of data is being saved.
             'identity',
@@ -311,17 +290,17 @@ class QuestionaireForm(forms.ModelForm):
             'follow_up_phone',
         )
 
-class DownloadResponseForm(forms.Form):
 
+class DownloadResponseForm(forms.Form):
     start_date = forms.DateField(
         label="Start Date: ",
         required=True,
-        )
+    )
 
     end_date = forms.DateField(
         label="End Date: ",
         required=True,
-        )
+    )
 
     def clean(self):
         cleaned_data = super(DownloadResponseForm, self).clean()
@@ -331,7 +310,6 @@ class DownloadResponseForm(forms.Form):
             end_date = cleaned_data['end_date']
         except KeyError:
             raise forms.ValidationError("Fill in the required dates.")
-        
 
         if end_date < start_date:
             raise forms.ValidationError("End Date can't smaller then Start Date.")

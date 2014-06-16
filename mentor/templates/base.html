@@ -27,36 +27,27 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    
                 </div>
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
                         {% if user.is_active %}
-                        {% if user|can_view_mentor_homepage %}
-                            <li>
-                                <a href="{% url 'mentor-homepage' %}">Mentor Page</a>
-                            </li>
-                        {% endif %}
-                        <li>
-                            <p class="navbar-text">{{ user }}</p>
-                        </li>
-                        <li>
-                            <a href="{% url 'account-logout' %}" >Logout</a>
-                        </li>
+                            {% if user|can_view_mentor_homepage %}
+                                <li>
+                                    <a href="{% url 'mentor-homepage' %}">Responses</a>
+                                </li>
+                            {% endif %}
+                            <li><p class="navbar-text">{{ user }}</p></li>
+                            <li><a href="{% url 'account-logout' %}" >Logout</a></li>
                         {% else %}
-                        <li>
-                            <a href="{% url 'account-login' %}">Login</a>
-                        </li>
+                            <li><a href="{% url 'account-login' %}">Login</a></li>
                         {% endif %}
                     </ul>
                 </div>
             </div>
         </nav>
         <div class="container" role="main">
-            
-
             {% block content %}{% endblock %}
-        </div>   
+        </div>
     </body>
 </html>

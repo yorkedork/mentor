@@ -62,19 +62,16 @@ MIDDLEWARE_CLASSES = (
 
 
 # CAS authentication setting using djangocas
-USE_CAS = True
+CAS_SERVER_URL = 'https://sso.pdx.edu/cas/'
 
-if USE_CAS:
-    CAS_SERVER_URL = 'https://sso.pdx.edu/cas/'
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'mentor.backends.PSUBackend',
+)
 
-    AUTHENTICATION_BACKENDS = (
-        'django.contrib.auth.backends.ModelBackend',
-        'mentor.backends.PSUBackend',
-    )
-
-    MIDDLEWARE_CLASSES += (
-        'djangocas.middleware.CASMiddleware',
-    )
+MIDDLEWARE_CLASSES += (
+    'djangocas.middleware.CASMiddleware',
+)
 
 ## end CAS authentication setting
 
@@ -92,7 +89,7 @@ WSGI_APPLICATION = 'mentor.wsgi.application'
 # EMAIL_LIST is the email address that email will be sent to inform client (specified by client)
 EMAIL_DOMAIN = 'pdx.edu'
 EMAIL_FROM = 'mentor_no_reply@pdx.edu'
-EMAIL_LIST = 'huyhoan@pdx.edu'
+EMAIL_LIST = 'mdj2@pdx.edu'
 
 
 

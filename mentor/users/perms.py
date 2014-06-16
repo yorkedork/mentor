@@ -8,9 +8,7 @@ def can_view_mentor_homepage(user):
 
 @permission
 def can_view_response_detail(user, response_id):
-    response = Questionaire.objects.get(pk=response_id)
-
-    return response.user==user or user.is_staff or user.is_mentor
+    return user.is_staff or user.is_mentor
 
 @permission
 def can_resolve_response(user, response_id):
