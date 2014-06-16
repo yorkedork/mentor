@@ -191,14 +191,16 @@
     </div>
 
     <div class="col-md-4">
-        <h4>History</h4>
-        <table class="table table-condensed table-striped">
-            {% for hist in history %}
-                <tr>
-                    <td>{{ hist.get_action_display }} by {{ hist.user }} on {{ hist.created_on }}</td>
-                </tr>
-            {% endfor %}
-        </table>
+        {% if history %}
+            <h4>History</h4>
+            <table class="table table-condensed table-striped">
+                {% for hist in history %}
+                    <tr>
+                        <td>{{ hist.get_action_display }} by {{ hist.user }} on {{ hist.created_on }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
     </div>
 </div>
 
