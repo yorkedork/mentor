@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block page_title %}Response to the form{% endblock %}
+{% block page_title %}MAPS Support Webform{% endblock %}
 
 {% load questionaire_tags %}
 {% block content %}
@@ -123,143 +123,36 @@
 
         <!-- Name -->
         <legend>General Information</legend>
-        {% if form.name.errors %}
-        <div class="form-group row has-error" >
-        {% else %}
-        <div class="form-group row">
-        {% endif %}
-            <label class="control-label col-sm-4">
-                {% if form.name.field.required %}<span style="color: red">*</span>{% endif %}
-                {{ form.name.label}}
-            </label>
-            <div class="col-sm-4">
-                {{ form.name }}
-            </div>
-            <div class="col-sm-4 text-danger">
-                {{ form.name.errors }}
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="control-label col-sm-4">
-                {% if form.student_ID.field.required %}<span style="color: red">*</span>{% endif %}
-                {{ form.student_ID.label }}
-            </label>
-            <div class="col-sm-3">
-                {{ form.student_ID }}
-            </div>
-        </div>   
-        <div class="form-group row">
-            <label class="control-label col-sm-4">
-                {% if form.identity.field.required %}<span style="color: red">*</span>{% endif %}
-                {{ form.identity.label }} 
-            </label>
-            <div class="col-sm-4">
-                {{ form.identity }}
-            </div>
-        </div>
-        
+        {% include "_field.html" with field=form.name %}
+        {% include "_field.html" with field=form.student_ID %}
+        {% include "_field.html" with field=form.identity %}
 
         <!-- PART 2: Mentor fill out the form about student/mentor problem -->
-        {% if form.on_behalf_of_student.errors %}
-        <div id="id_hidden_who_fill_form" class="form-group row has-error">
-        {% else %}
-        <div id="id_hidden_who_fill_form" class="form-group row">
-        {% endif %}
-            <label class="control-label col-sm-4" >
-                {% if form.on_behalf_of_student.field.required %}<span style="color: red">*</span>{% endif %}
-                {{ form.on_behalf_of_student.label }}
-            </label>
-            <div class="col-sm-4">
-                {{ form.on_behalf_of_student }}
-            </div>
-            <div class="col-sm-4 text-danger">
-                {{ form.on_behalf_of_student.errors }}
-            </div>
-        </div>
+        {% include "_field.html" with field=form.on_behalf_of_student id="id_hidden_who_fill_form" %}
 
         <!-- PART 3: Student/Mentor name -->
-        {% if form.student_name.errors %}
-        <div class="form-group row has-error" id="id_hidden_student_name" >    
-        {% else %}
-        <div class="form-group row" id="id_hidden_student_name" >  
-        {% endif %}
-            <label class="control-label col-sm-4">
-                <span style="color: red">*</span>
-                {{ form.student_name.label }} 
-            </label>
-            <div class="col-sm-4">
-                {{ form.student_name }}
-            </div>
-            <div class="col-sm-4 text-danger">
-                {{ form.student_name.errors }}
-            </div>
-        </div>
+        {% include "_field.html" with field=form.student_name id="id_hidden_student_name" %}
 
          <!-- Mentor name field -->
-        {% if form.mentor_name.errors %}
-        <div class="form-group row  has-error" id="id_hidden_mentor_name" >    
-        {% else %}
-        <div class="form-group row" id="id_hidden_mentor_name" >  
-        {% endif %} 
-            <label class="control-label col-sm-4">
-                <span style="color: red">*</span>
-                {{ form.mentor_name.label }} 
-            </label>
-            <div class="col-sm-4">
-                {{ form.mentor_name }}
-            </div>
-            <div class="col-sm-4 text-danger">
-                {{ form.mentor_name.errors }}
-            </div>
-        </div>
-        
+        {% include "_field.html" with field=form.mentor_name id="id_hidden_mentor_name" force_required=1 %}
 
         <!-- PART 4: University Studies information if you are student -->
         <div id="id_hidden_university_studies" >
             <legend>University Studies</legend>
-            {% if form.UNST_course.errors %}
-            <div class="form-group row has-error">
-            {% else %}
-            <div class="form-group row">
-            {% endif %}
-                <label class="control-label col-sm-4" >
-                    <span style="color: red ">*</span>
-                    {{ form.UNST_course.label }} 
-                </label>
-                <div class="col-sm-4">
-                    {{ form.UNST_course }}
-                </div>
-                <div class="col-sm-4 text-danger">
-                    {{ form.UNST_course.errors }}
-                </div>
-            </div>
-            
-            <div class="form-group row" id="id_hidden_type_of_course">
-                <label class="control-label col-sm-4">
-                    {% if form.type_of_course.field.required %}<span style="color: red">*</span>{% endif %}
-                    {{ form.type_of_course.label }} 
-                </label>
-                <div class="col-sm-2">
-                    {{ form.type_of_course }}
-                </div>
-            </div>
+            {% include "_field.html" with field=form.UNST_course force_required=1 %}
+            {% include "_field.html" with field=form.type_of_course id="id_hidden_type_of_course" %}
         </div>
-        
 
         <!-- HIDDEN PARTS -->
         <div id="id_hidden_concern">
             <legend>Primary Concerns</legend>
             <!-- Primary concernt field -->
-            {% if form.primary_concern.errors %}
-            <div class="form-group row has-error">
-            {% else %}
-            <div class="form-group row">
-            {% endif %}
+            <div class="form-group row {% if form.primary_concern.errors %}has-error{% endif %}">
                 <label class="control-label col-sm-4">
                     <span style="color: red; ">*</span>
                     {{ form.primary_concern.label }}
                 </label>
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     {{ form.primary_concern}}
                     <div class="form-inline" style="margin-top: -10px; padding-left: 40px">
                         <label >
@@ -273,94 +166,38 @@
                 </div>
             </div>
 
-            <!-- Step taken form field -->
-            <div class="form-group row">
-                <label class="control-label col-sm-4">
-                    {% if form.step_taken.field.required %}<span style="color: red">*</span>{% endif %}
-                    {{ form.step_taken.label }}
-                </label>
-                <div class="col-sm-4">
-                    {{ form.step_taken }}
-                </div>
-            </div>
+            {% include "_field.html" with field=form.primary_concern_details %}
+            {% include "_field.html" with field=form.step_taken %}
+            {% include "_field.html" with field=form.when_take_step %}
+            {% include "_field.html" with field=form.support_from_MAPS %}
 
-            <!-- When step is taken -->
-            <div class="form-group row">
-                <label class="col-sm-4 control-label">
-                    {% if form.when_take_step.field.required %}<span style="color: red">*</span>{% endif %}
-                    {{ form.when_take_step.label}}
-                </label>
-                <div class="col-sm-3">
-                    {{ form.when_take_step }}
-                </div>
-            </div>
-
-            <!-- Support from MAPS field -->
-            
-            <div class="form-group row">
-                <label class="col-sm-4 control-label">
-                    {% if form.support_from_MAPS.field.required %}<span style="color: red">*</span>{% endif %}
-                    {{ form.support_from_MAPS.label }}
-                </label>
-                <div class="col-sm-4">
-                    {{ form.support_from_MAPS }}
-                </div>
-            </div>
-
-        
-        
             <!-- Follow up method field -->
             <legend>Follow-up Method</legend>
-            {% if form.contact_who.errors %}
-            <div class="form-group row has-error" id="id_hidden_contact_who">
-            {% else %}
-            <div class="form-group row" id="id_hidden_contact_who">
-            {% endif %}
-                <label class="col-sm-4 control-label">
-                    {% if form.contact_who.field.required %}<span style="color: red">*</span>{% endif %}
-                    {{ form.contact_who.label }}
-                </label>
-                <div class="col-sm-4">
-                    {{ form.contact_who }}
-                </div>
-                <div class="col-sm-4 text-danger">
-                    {{ form.contact_who.errors}}
-                </div>
-            </div>
+            {% include "_field.html" with field=form.contact_who id="id_hidden_contact_who" %}
 
-            {% if form.non_field_errors %}
-            <div class="form-group row has-error">
-            {% else %}
-            <div class="form-group row">
-            {% endif %}
+            <div class="form-group row {% if form.follow_up_email.errors or form.follow_up_phone.errors %}has-error{% endif %}">
                 <div class="col-sm-4">
                     <label class="control-label">
-                        <span style="color: red">*</span> How would you like us to respond? (Fill at least ONE method below):
+                        <span style="color: red">*</span> How would you like us to respond? (Fill at least ONE method):
                     </label>
-                    <div class="text-danger">
-                        {{ form.non_field_errors }}
+                </div>
+
+                <div class="col-sm-4">
+                    <!-- Via email -->
+                    <div class="input-group">
+                        <span class="input-group-addon">Email</span> {{ form.follow_up_email }}
+                    </div>
+                    <br />
+                    <div class="input-group">
+                        <span class="input-group-addon">Phone number</span>{{ form.follow_up_phone }}
                     </div>
                 </div>
-                
-                <div class="col-sm-7" style="margin-left: 15px">
-                    <!-- Via email -->
-                    <div class="form-group row">
-                        <div class="col-sm-6  input-group">
-                            <span class="input-group-addon">
-                                Email
-                            </span>
-                            {{ form.follow_up_email }}
-                        </div>
-                    </div>
 
-                    <!-- Via phone -->
-                    <div class="form-group row">
-                        <div class="col-sm-12 input-group">
-                            <span class="input-group-addon">Phone number</span>
-                            {{ form.follow_up_phone }}
-                        </div>
+                <div class="col-sm-4">
+                    <div class="text-danger">
+                        {{ form.follow_up_email.errors }}
+                        {{ form.follow_up_phone.errors }}
                     </div>
-  
                 </div>
             </div>
 
@@ -370,7 +207,6 @@
             </div>
         </div>
         <!-- END OF HIDDEN PART -->
-        
     </form>
 
 {% endblock %}

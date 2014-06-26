@@ -46,6 +46,7 @@ class Questionaire(models.Model):
 
     primary_concern = models.ManyToManyField(PrimaryConcernChoice)  # What are your primary concerns?
     primary_concern_other = models.TextField(blank=True)            # Other concerns?
+    primary_concern_details = models.TextField(blank=True)            # Other concerns?
     step_taken = models.TextField(blank=True)                       # Please share the steps you've taken to address these concerns (if any)
     when_take_step = models.CharField(max_length=20,blank=True)                   # When did you take these steps? (Dropdown menu)
     support_from_MAPS = models.TextField(blank=True)                # What kind of support would be helpful from the MAPS team?

@@ -1,0 +1,12 @@
+<div class="form-group row {% if field.errors %}has-error{% endif %}" {% if id %}id="{{ id }}"{% endif %}>
+    <label class="col-sm-4 control-label">
+        {% if field.field.required or force_required %}<span style="color: red">*</span>{% endif %}
+        {{ field.label }}
+    </label>
+    <div class="col-sm-4">
+        {{ field }}
+    </div>
+    <div class="col-sm-4 text-danger">
+        {{ field.errors }}
+    </div>
+</div>

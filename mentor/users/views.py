@@ -6,6 +6,7 @@ from django.utils.timezone import utc
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from mentor.questionaire.models import Questionaire, QuestionaireHistory, VIEWED, RESOLVED, UNRESOLVED
+from mentor.questionaire.forms import QuestionaireForm
 from .perms import decorators
 
 # Create your views here.
@@ -43,6 +44,8 @@ def response_detail(request, response_id):
         action__in=[RESOLVED, UNRESOLVED]
     )
 
+    form = QuestionaireForm(instance=response)
+
     if not QuestionaireHistory.objects.filter(user=request.user, questionaire=response, action=VIEWED).exists():
         QuestionaireHistory(user=request.user, questionaire=response, action=VIEWED).save()
 
@@ -51,6 +54,7 @@ def response_detail(request, response_id):
         "history": history,
         "RESOLVED": RESOLVED,
         "UNRESOLVED": UNRESOLVED,
+        "form": form,
     })
 
 @decorators.can_resolve_response

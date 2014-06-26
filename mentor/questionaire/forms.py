@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django import forms
 from mentor.questionaire.models import Questionaire, PrimaryConcernChoice 
 from datetime import date 
@@ -46,12 +47,12 @@ class QuestionaireForm(forms.ModelForm):
     PRIMARY_CONCERN_CHOICES = PrimaryConcernChoice.objects.all()
 
     WHEN_CHOICES = (
-        ('Few days', 'In the past few days'),
-        ('Last week', 'In the last week'),
-        ('Last two weeks', 'In the last two weeks'),
-        ('Last month', 'In the last month'),
-        ('Over a month', 'Over a month ago'),
-        ('Dont know', "Don't know/Other")
+        2*('In the past few days',),
+        2*('In the last week',),
+        2*('In the last two weeks',),
+        2*('In the last month',),
+        2*('Over a month ago',),
+        2*("Don't know/Other",)
     )
 
     YN_CHOICES = (
@@ -65,13 +66,13 @@ class QuestionaireForm(forms.ModelForm):
     )
 
     name = forms.CharField(label='Name',error_messages={'required':'Please enter your name'},required=True)
-    student_ID = forms.DecimalField(label='Student ID#', required=False, max_digits=9, decimal_places=0)
+    student_ID = forms.CharField(label='Student ID#', required=False)
     student_name = forms.CharField(label='Name of student',required=False)
     mentor_name = forms.CharField(label='Name of FRINQ or SINQ mentor',required=False)
     UNST_course = forms.ChoiceField(
         widget=forms.RadioSelect(),
         choices=UNST_CHOICES,
-        label='What University Studies course are you enrolled in?',
+        label='I am currently enrolled in:',
         required=False
     )
     type_of_course = forms.ChoiceField(
@@ -100,6 +101,11 @@ class QuestionaireForm(forms.ModelForm):
     primary_concern_other = forms.CharField(
         widget=forms.widgets.TextInput(attrs={'class': 'form-control input-sm'}),
         label="Other: ",
+        required=False,
+    )
+    primary_concern_details = forms.CharField(
+        widget=forms.widgets.Textarea(attrs={'rows':'3', }),
+        label="Please provide us with some details about your primary concern(s):",
         required=False,
     )
     step_taken = forms.CharField(
@@ -138,7 +144,7 @@ class QuestionaireForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(QuestionaireForm, self).__init__(*args, **kwargs)
 
-        controls = ['name', 'student_ID', 'student_name', 'mentor_name', 'when_take_step', 'type_of_course', 'step_taken', 'when_take_step', 'support_from_MAPS', 'follow_up_email']
+        controls = ['primary_concern_details', 'name', 'student_ID', 'student_name', 'mentor_name', 'when_take_step', 'type_of_course', 'step_taken', 'when_take_step', 'support_from_MAPS', 'follow_up_email']
         for control in controls:
             self.fields[control].widget.attrs['class'] = 'form-control input-sm'
 
@@ -167,6 +173,18 @@ class QuestionaireForm(forms.ModelForm):
 
         return on_behalf_of_student
 
+    def clean_student_ID(self):
+        student_id = self.cleaned_data["student_ID"]
+        if student_id == "":
+            return None
+
+        if len(str(student_id)) != 9:
+            raise forms.ValidationError("Please enter a 9 digit student ID number")
+        if set(student_id) - set("0123456789") != set():
+            raise forms.ValidationError("Please enter a 9 digit student ID number")
+
+        return student_id
+
     def clean_contact_who(self):
         contact_who = self.cleaned_data.get("contact_who")
         on_behalf_of_student = self.cleaned_data.get("on_behalf_of_student")
@@ -189,7 +207,7 @@ class QuestionaireForm(forms.ModelForm):
 
         # Mentor name is required when student fill out the form.
         if (identity == 'ST') and (mentor_name == ''):
-            raise forms.ValidationError('Please enter mentor name')
+            raise forms.ValidationError("Please enter your mentor's name")
 
         return mentor_name
 
@@ -219,7 +237,7 @@ class QuestionaireForm(forms.ModelForm):
         primary_concern_other = self.cleaned_data.get("primary_concern_other")
         primary_concern = self.cleaned_data.get("primary_concern")
 
-        if (primary_concern_other == '' and primary_concern == []):
+        if (primary_concern_other == '' and len(primary_concern) == 0):
             raise forms.ValidationError('Please answer this question')
 
         return primary_concern
@@ -265,7 +283,9 @@ class QuestionaireForm(forms.ModelForm):
         phone = cleaned_data.get("follow_up_phone")
 
         if not email and not phone :
-            raise forms.ValidationError('Fill at least one method to follow-up you')
+            self.cleaned_data.pop("follow_up_email", None)
+            self.cleaned_data.pop("follow_up_phone", None)
+            self._errors.setdefault('follow_up_phone', self.error_class()).append("Fill in at least one method to follow-up method")
 
         return cleaned_data
 
@@ -288,6 +308,7 @@ class QuestionaireForm(forms.ModelForm):
             'contact_who',
             'follow_up_email',
             'follow_up_phone',
+            'primary_concern_details',
         )
 
 
