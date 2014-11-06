@@ -99,7 +99,7 @@ WSGI_APPLICATION = 'mentor.wsgi.application'
 # EMAIL_LIST is the email address that email will be sent to inform client (specified by client)
 EMAIL_DOMAIN = 'pdx.edu'
 EMAIL_FROM = 'mentor_no_reply@pdx.edu'
-EMAIL_LIST = 'mdj2@pdx.edu'
+EMAIL_LIST = 'UNST-MAPS-Group@pdx.edu'
 
 
 
