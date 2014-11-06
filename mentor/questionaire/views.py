@@ -1,3 +1,4 @@
+import csv
 from django.shortcuts import render, get_object_or_404
 from mentor.questionaire.models import Questionaire
 from mentor.users.models import User 
@@ -10,7 +11,6 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 from datetime import date, timedelta, datetime
 from django.utils.timezone import localtime
-from mentor.utils import UnicodeWriter
 import pytz
 from django.conf import settings
 # Create your views here.
@@ -62,8 +62,24 @@ def report(request):
             http_response = HttpResponse(content_type='text/csv')
             http_response['Content-Disposition'] = 'attachment; filename="%s.csv"' % (filename)
 
-            writer = UnicodeWriter(http_response)
-            header = ["submitted on", "odin name", "student name", "student_ID" ,"mentor name", "identity" , "on_behalf_of_student" , "primary_concern", "step_taken", "when_take_step" ,"support_from_MAPS", "contact_who", "follow_up_email", "follow_up_phone", "follow_up_appointment"]
+            writer = csv.writer(http_response)
+            header = [
+                "submitted on",
+                "odin name",
+                "student name",
+                "student_ID",
+                "mentor name",
+                "identity",
+                "on_behalf_of_student",
+                "primary_concern",
+                "primary_concern_other",
+                "step_taken",
+                "when_take_step",
+                "support_from_MAPS",
+                "contact_who",
+                "follow_up_email",
+                "follow_up_phone",
+            ]
             writer.writerow(header)
             
             for questionaire in questionaires:
@@ -75,7 +91,7 @@ def report(request):
                 csv_row.append(questionaire.mentor_name)
                 csv_row.append(questionaire.identity)
                 csv_row.append(questionaire.on_behalf_of_student)
-                csv_row.append(' ,'.join([str(primary_concern) for primary_concern in questionaire.primary_concern.all ]))
+                csv_row.append(' ,'.join([str(primary_concern) for primary_concern in questionaire.primary_concern.all() ]))
                 csv_row.append(questionaire.primary_concern_other)
                 csv_row.append(questionaire.step_taken)
                 csv_row.append(questionaire.when_take_step)

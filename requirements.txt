@@ -1,6 +1,7 @@
-django==1.6.1
-mysql-python==1.2.4
--e git://github.com/mdj2/djangocas.git#egg=djangocas
+django<1.8
+pymysql
+-e git://github.com/PSU-OIT-ARC/djangocas.git#egg=djangocas
 pytz
-python-ldap==2.3.13
-django-perms==0.0.7
+python3-ldap<0.9.6 # the higher versions don't install correctly
+-e git://github.com/PSU-OIT-ARC/django-perms.git#egg=django-perms
+-e git://github.com/PSU-OIT-ARC/django-arcutils.git#egg=django-arcutils

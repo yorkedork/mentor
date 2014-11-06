@@ -22,7 +22,7 @@ class PrimaryConcernChoice(models.Model):
         ordering = ['rank']
         db_table = "primary_concern_choice"
 
-    def __unicode__(self):
+    def __str__(self):
         return self.value
 
 
@@ -66,7 +66,7 @@ class Questionaire(models.Model):
         db_table = 'questionaire'
         ordering = ['created_on']
 
-    def __unicode__(self):
+    def __str__(self):
         concerns = ', '.join([str(concern.value) for concern in self.primary_concern.all()])
         if self.primary_concern_other:
             concerns = concerns + ', ' + self.primary_concern_other

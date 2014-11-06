@@ -8,7 +8,6 @@ from django.contrib import admin
 from mentor.questionaire import views as questionaire
 from mentor.counter import views as counter
 from mentor.users import views as user
-from settings import base
 
 admin.autodiscover()
 

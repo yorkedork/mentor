@@ -29,7 +29,7 @@ class User(AbstractBaseUser):
     class Meta:
         db_table = "user"
 
-    def __unicode__(self):
+    def __str__(self):
         if self.first_name:
             return u'%s, %s' % (self.last_name, self.first_name)
         else:

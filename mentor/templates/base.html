@@ -6,12 +6,11 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block page_title %}{{ page_title }}{% endblock %}</title>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="{% cdn_url 'jquery/1.11.1/jquery-1.11.1.min.js' %}"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-datepicker.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}js/autotab/jquery.autotab.js"></script>
-        <script type="text/javascript" src="{{ STATIC_URL }}bootstrap-3.1.1-dist/js/bootstrap.js"></script>
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}bootstrap-3.1.1-dist/css/bootstrap.css">
+        <script type="text/javascript" src="{% cdn_url 'bootstrap/3.2.0/js/bootstrap.min.js' %}"></script>
+        <link rel="stylesheet" type="text/css" href="{% cdn_url 'bootstrap/3.2.0/css/bootstrap.min.css' %}">
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/datepicker.css">
     </head>
     <body>

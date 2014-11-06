@@ -1,3 +1,4 @@
+import csv
 from django.shortcuts import render
 from mentor.counter.models import Counter 
 from datetime import date, datetime, timedelta 
@@ -5,7 +6,6 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.utils.timezone import localtime
 
 from django.contrib.admin.views.decorators import staff_member_required
-from mentor.utils import UnicodeWriter
 from mentor.questionaire.forms import DownloadResponseForm
 from django.db.models import Count
 import pytz 
@@ -46,7 +46,8 @@ def report(request):
             http_response = HttpResponse(content_type='text/csv')
             http_response['Content-Disposition'] = 'attachment; filename="%s.csv"' % (filename)
 
-            writer = UnicodeWriter(http_response)
+            
+            writer = csv.writter(http_response)
             header = ["url", "timestamp"]
             writer.writerow(header)
             

@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 from fnmatch import fnmatch
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
+import pymysql
+
+pymysql.install_as_MySQLdb()
 
 DJANGO_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), "../"))
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -45,10 +48,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'arcutils',
+    'permissions',
     'mentor.questionaire',
     'mentor.users',
     'mentor.counter',
-    'permissions',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -76,8 +80,14 @@ MIDDLEWARE_CLASSES += (
 ## end CAS authentication setting
 
 # LDAP support
-LDAP_URL = "ldap://ldap-login.oit.pdx.edu"
-LDAP_BASE_DN = 'ou=people,dc=pdx,dc=edu'
+#LDAP_URL = "ldap://ldap-login.oit.pdx.edu"
+#LDAP_BASE_DN = 'ou=people,dc=pdx,dc=edu'
+LDAP = {
+    "default": {
+        "host": "ldap://ldap-login.oit.pdx.edu",
+        "search_dn": 'ou=people,dc=pdx,dc=edu'
+    }
+}
 
 ROOT_URLCONF = 'mentor.urls'
 

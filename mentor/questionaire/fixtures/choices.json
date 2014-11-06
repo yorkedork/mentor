@@ -1,0 +1,66 @@
+[
+{
+    "pk": 1,
+    "model": "questionaire.primaryconcernchoice",
+    "fields": {
+        "rank": 1,
+        "value": "Academics"
+    }
+},
+{
+    "pk": 2,
+    "model": "questionaire.primaryconcernchoice",
+    "fields": {
+        "rank": 2,
+        "value": "Finances"
+    }
+},
+{
+    "pk": 3,
+    "model": "questionaire.primaryconcernchoice",
+    "fields": {
+        "rank": 3,
+        "value": "Housing"
+    }
+},
+{
+    "pk": 4,
+    "model": "questionaire.primaryconcernchoice",
+    "fields": {
+        "rank": 4,
+        "value": "Mental health"
+    }
+},
+{
+    "pk": 5,
+    "model": "questionaire.primaryconcernchoice",
+    "fields": {
+        "rank": 5,
+        "value": "Physical health"
+    }
+},
+{
+    "pk": 6,
+    "model": "questionaire.primaryconcernchoice",
+    "fields": {
+        "rank": 6,
+        "value": "Sexual assault"
+    }
+},
+{
+    "pk": 7,
+    "model": "questionaire.primaryconcernchoice",
+    "fields": {
+        "rank": 7,
+        "value": "Loneliness"
+    }
+},
+{
+    "pk": 8,
+    "model": "questionaire.primaryconcernchoice",
+    "fields": {
+        "rank": 8,
+        "value": "Interaction(s) with PSU faculty, staff, or students"
+    }
+}
+]
