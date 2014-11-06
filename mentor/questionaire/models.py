@@ -15,7 +15,7 @@ class PrimaryConcernChoice(models.Model):
     A choice table for primary concerns
     """
     primary_concern_choice_id = models.AutoField(primary_key=True)
-    value = models.CharField(max_length=256, blank=False)
+    value = models.CharField(max_length=255, blank=False)
     rank = models.IntegerField()
 
     class Meta:
@@ -34,24 +34,24 @@ class Questionaire(models.Model):
     user = models.ForeignKey(User)
 
     # Questions
-    student_name = models.CharField(max_length=30, blank=True)     # Student name
+    student_name = models.CharField(max_length=255, blank=True)     # Student name
     student_ID = models.DecimalField(null=True,max_digits=9,decimal_places=0, blank=True)       # Student ID
-    mentor_name = models.CharField(max_length=30, blank=True)      # Mentor name
+    mentor_name = models.CharField(max_length=255, blank=True)      # Mentor name
 
-    identity = models.CharField(max_length=2,blank=True)           # Are you mentor or student? 
-    on_behalf_of_student = models.CharField(max_length=2, blank=True)     # Are you filling out this form on behalf of student?
+    identity = models.CharField(max_length=255,blank=True)           # Are you mentor or student? 
+    on_behalf_of_student = models.CharField(max_length=255, blank=True)     # Are you filling out this form on behalf of student?
 
-    UNST_course = models.CharField(max_length=20, blank=True)       # What University Studies course are you enrolled in?
-    type_of_course = models.CharField(max_length=20, blank=True)    # Is your UNST course in-person or online?
+    UNST_course = models.CharField(max_length=255, blank=True)       # What University Studies course are you enrolled in?
+    type_of_course = models.CharField(max_length=255, blank=True)    # Is your UNST course in-person or online?
 
     primary_concern = models.ManyToManyField(PrimaryConcernChoice)  # What are your primary concerns?
     primary_concern_other = models.TextField(blank=True)            # Other concerns?
     primary_concern_details = models.TextField(blank=True)            # Other concerns?
     step_taken = models.TextField(blank=True)                       # Please share the steps you've taken to address these concerns (if any)
-    when_take_step = models.CharField(max_length=20,blank=True)                   # When did you take these steps? (Dropdown menu)
+    when_take_step = models.CharField(max_length=255,blank=True)                   # When did you take these steps? (Dropdown menu)
     support_from_MAPS = models.TextField(blank=True)                # What kind of support would be helpful from the MAPS team?
 
-    contact_who = models.CharField(max_length=2, blank=True)        # Do you want us to contact student directly?
+    contact_who = models.CharField(max_length=255, blank=True)        # Do you want us to contact student directly?
     follow_up_email = models.EmailField(null=True,blank=True)
     follow_up_phone = models.DecimalField(null=True,max_digits=10,decimal_places=0,blank=True)
 
