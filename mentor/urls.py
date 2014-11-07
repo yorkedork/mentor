@@ -12,7 +12,7 @@ from mentor.users import views as user
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', lambda request: render(request, "main.html"), name='home'),
+    url(r'^$', questionaire.add_questionaire, name='home'),
 
     # admin area
     url(r'^admin/', include(admin.site.urls), name='admin-home'),
