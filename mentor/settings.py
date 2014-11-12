@@ -9,13 +9,36 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
 import os
-from fnmatch import fnmatch
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 import pymysql
+from fnmatch import fnmatch
+from varlet import variable, VARIABLES_PATH
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 
 pymysql.install_as_MySQLdb()
 
-DJANGO_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), "../"))
+# set this to false in dev
+DEBUG = variable("DEBUG", False)
+TEMPLATE_DEBUG = DEBUG
+# a list of 2-tuples containing a name and email address. No need to set in dev
+ADMINS = variable("ADMINS", [("John Doe", "foo@example.com")])
+# the default is safe to use
+SECRET_KEY = variable("SECRET_KET", os.urandom(64).decode("latin1"))
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        # database name
+        'NAME': variable("DB_NAME", 'mentor'),
+        # DB username. The default is fine for dev
+        'USER': variable("DB_USER", "root"),
+        # DB password. The default is fine for dev
+        'PASSWORD': variable("DB_PASSWORD", ''),
+        # DB host. The default is fine for dev
+        'HOST': variable("DB_HOST", ''),
+    }
+}
+
+DJANGO_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__)))
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.normpath(os.path.join(DJANGO_DIR, "../"))
 
@@ -24,7 +47,7 @@ AUTH_USER_MODEL = 'users.User'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
-ALLOWED_HOSTS = ['.pdx.edu']
+ALLOWED_HOSTS = ['.pdx.edu'] + (["*"] if DEBUG else [])
 
 # allow the use of wildcards in the INTERAL_IPS setting
 class IPList(list):
@@ -146,3 +169,8 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(DJANGO_DIR, "templates"),
 )
+
+# The HOST:PORT of the logstash server you want to pipe logs to
+LOGSTASH_ADDRESS = variable("LOGSTASH_ADDRESS", "localhost:5000")
+
+LOGGING_CONFIG = 'arcutils.logging.basic'

@@ -5,3 +5,5 @@ pytz
 python3-ldap<0.9.6 # the higher versions don't install correctly
 -e git://github.com/PSU-OIT-ARC/django-perms.git#egg=django-perms
 -e git://github.com/PSU-OIT-ARC/django-arcutils.git#egg=django-arcutils
+varlet
+python-logstash==0.4.2
