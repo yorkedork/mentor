@@ -11,7 +11,7 @@ clean:
 	find . -iname "*.pyo" -delete
 	find . -iname "__pycache__" -delete
 
-deploy:
+deploy: .env
 	python manage.py migrate
 	python manage.py loaddata choices
 	python manage.py collectstatic --noinput
