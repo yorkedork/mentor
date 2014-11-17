@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 import pymysql
 from fnmatch import fnmatch
-from varlet import variable, VARIABLES_PATH
+from varlet import variable
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 
 pymysql.install_as_MySQLdb()
