@@ -3,6 +3,7 @@
 DEFAULT_DB_NAME=mentor
 WSGI_PATH=mentor/wsgi.py
 GIT_REMOTE=git@github.com:PSU-OIT-ARC/mentor.git
+GIT_REMOTE_HTTPS=https://github.com/PSU-OIT-ARC/mentor.git
 DEV_PATH=/vol/www/mapsmentors/dev
 PROD_PATH=/vol/www/mapsmentors/prod
 
