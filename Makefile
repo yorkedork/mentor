@@ -21,9 +21,10 @@ clean:
 
 deploy: .env
 ifdef BRANCH
+	git remote set-url origin $(GIT_REMOTE_HTTPS)
 	git remote update
 	git fetch --all
-	git checkout $(GIT_REMOTE)/$(BRANCH)
+	git merge --ff-only origin/$(BRANCH)
 endif
 	python manage.py migrate
 	python manage.py loaddata choices
