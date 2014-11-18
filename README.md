@@ -3,3 +3,5 @@
 ## Install
 
     make install
+
+test
