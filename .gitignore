@@ -6,3 +6,7 @@ media/*
 /static
 __pycache__
 /variables.py
+/media
+/src
+/env
+/mentor/local_settings.py

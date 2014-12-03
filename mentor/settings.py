@@ -17,26 +17,29 @@ from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 pymysql.install_as_MySQLdb()
 
 # set this to false in dev
-DEBUG = variable("DEBUG", False)
+# DEBUG = variable("DEBUG", False)
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 # a list of 2-tuples containing a name and email address. No need to set in dev
-ADMINS = variable("ADMINS", [("John Doe", "foo@example.com")])
+# ADMINS = variable("ADMINS", [("John Doe", "foo@example.com")])
+ADMINS = [("Thom Linton", "tlinton@pdx.edu")]
 # the default is safe to use
-SECRET_KEY = variable("SECRET_KET", os.urandom(64).decode("latin1"))
+# SECRET_KEY = variable("SECRET_KET", os.urandom(64).decode("latin1"))
+SECRET_KEY = "lsajylk3aj3lkajy4w4l5kju5"
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        # database name
-        'NAME': variable("DB_NAME", 'mentor'),
-        # DB username. The default is fine for dev
-        'USER': variable("DB_USER", "root"),
-        # DB password. The default is fine for dev
-        'PASSWORD': variable("DB_PASSWORD", ''),
-        # DB host. The default is fine for dev
-        'HOST': variable("DB_HOST", ''),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         # database name
+#         'NAME': variable("DB_NAME", 'mentor'),
+#         # DB username. The default is fine for dev
+#         'USER': variable("DB_USER", "root"),
+#         # DB password. The default is fine for dev
+#         'PASSWORD': variable("DB_PASSWORD", ''),
+#         # DB host. The default is fine for dev
+#         'HOST': variable("DB_HOST", ''),
+#     }
+# }
 
 DJANGO_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__)))
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -47,7 +50,7 @@ AUTH_USER_MODEL = 'users.User'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
-ALLOWED_HOSTS = ['.pdx.edu'] + (["*"] if DEBUG else [])
+ALLOWED_HOSTS = ['.pdx.edu', 'mentoring.local'] + (["*"] if DEBUG else [])
 
 # allow the use of wildcards in the INTERAL_IPS setting
 class IPList(list):
@@ -59,14 +62,14 @@ class IPList(list):
                 return True
         return False
 
-INTERNAL_IPS = IPList(['10.*', '192.168.*'])
+INTERNAL_IPS = IPList(['10.*', '192.168.*', '172.*'])
 
 
 # Application definition
 
 INSTALLED_APPS = (
     'django.contrib.admin',
-    # 'django.contrib.auth',
+    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -89,28 +92,28 @@ MIDDLEWARE_CLASSES = (
 
 
 # CAS authentication setting using djangocas
-CAS_SERVER_URL = 'https://sso.pdx.edu/cas/'
+# CAS_SERVER_URL = 'https://sso.pdx.edu/cas/'
 
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'mentor.backends.PSUBackend',
-)
+# AUTHENTICATION_BACKENDS = (
+#     'django.contrib.auth.backends.ModelBackend',
+#     'mentor.backends.PSUBackend',
+# )
 
-MIDDLEWARE_CLASSES += (
-    'djangocas.middleware.CASMiddleware',
-)
+# MIDDLEWARE_CLASSES += (
+#     'djangocas.middleware.CASMiddleware',
+# )
 
 ## end CAS authentication setting
 
 # LDAP support
 #LDAP_URL = "ldap://ldap-login.oit.pdx.edu"
 #LDAP_BASE_DN = 'ou=people,dc=pdx,dc=edu'
-LDAP = {
-    "default": {
-        "host": "ldap://ldap-login.oit.pdx.edu",
-        "search_dn": 'ou=people,dc=pdx,dc=edu'
-    }
-}
+# LDAP = {
+#     "default": {
+#         "host": "ldap://ldap-login.oit.pdx.edu",
+#         "search_dn": 'ou=people,dc=pdx,dc=edu'
+#     }
+# }
 
 ROOT_URLCONF = 'mentor.urls'
 
@@ -171,6 +174,9 @@ TEMPLATE_DIRS = (
 )
 
 # The HOST:PORT of the logstash server you want to pipe logs to
-LOGSTASH_ADDRESS = variable("LOGSTASH_ADDRESS", "localhost:5000")
+# LOGSTASH_ADDRESS = variable("LOGSTASH_ADDRESS", "localhost:5000")
+LOGSTASH_ADDRESS = "localhost:5000"
 
 LOGGING_CONFIG = 'arcutils.logging.basic'
+
+from mentor.local_settings import *

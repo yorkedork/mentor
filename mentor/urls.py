@@ -33,11 +33,14 @@ urlpatterns = patterns('',
     url(r'^goto/?$', counter.goto, name='counter-goto'),
 )
 
-# djangocas
 urlpatterns += patterns('',
-    url(r'^accounts/login/$', 'djangocas.views.login', name='account-login'),
-    url(r'^accounts/logout/$', 'djangocas.views.logout', name='account-logout'),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', name='account-logout'),
 )
+# djangocas
+# urlpatterns += patterns('',
+#     url(r'^accounts/login/$', 'djangocas.views.login', name='account-login'),
+#     url(r'^accounts/logout/$', 'djangocas.views.logout', name='account-logout'),
+# )
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
